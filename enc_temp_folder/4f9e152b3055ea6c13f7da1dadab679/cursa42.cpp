@@ -216,45 +216,45 @@ void addStudent()
 	int main();
 }
 
-//void exercise() 
-//{
-//	string group;
-//	int i = 0, j = 0, n = 0;
-//	string line;
-//	Student* students = new Student[i];
-//	ifstream ifs;
-//	ifs.open("textFile.txt", ios_base::in);
-//	cout << "Введите название группы, чтобы просмотреть студентов: ";
-//	cin >> group;
-//	if (ifs.is_open())
-//	{
-//		while (getline(ifs, line))
-//		{
-//			students[i].FIO = line;
-//			getline(ifs, line);
-//			students[i].birthYear = stoi(line);
-//			getline(ifs, line);
-//			students[i].startYear = stoi(line);
-//			getline(ifs, line);
-//			students[i].faculty = line;
-//			getline(ifs, line);
-//			students[i].inst = line;
-//			getline(ifs, line);
-//			students[i].group = line;
-//			getline(ifs, line);
-//			students[i].booknum = line;
-//			getline(ifs, line);
-//			getline(ifs, line);
-//			getline(ifs, line);
-//			getline(ifs, line);
-//			if (students[i].group == group)
-//			{
-//				cout << students[i].booknum << "\n" << students[i].FIO << "\n" << students[i].faculty <<  "\n" << students[i].inst << "\n" << students[i].group << "\n";
-//			}
-//			
-//		}
-//	}
-//}
+void exercise() 
+{
+	string group;
+	int i = 0, j = 0, n = 0;
+	string line;
+	Student* students = new Student[i];
+	ifstream ifs;
+	ifs.open("textFile.txt", ios_base::in);
+	cout << "Введите название группы, чтобы просмотреть студентов: ";
+	cin >> group;
+	if (ifs.is_open())
+	{
+		while (getline(ifs, line))
+		{
+			students[i].FIO = line;
+			getline(ifs, line);
+			students[i].birthYear = stoi(line);
+			getline(ifs, line);
+			students[i].startYear = stoi(line);
+			getline(ifs, line);
+			students[i].faculty = line;
+			getline(ifs, line);
+			students[i].inst = line;
+			getline(ifs, line);
+			students[i].group = line;
+			getline(ifs, line);
+			students[i].booknum = line;
+			getline(ifs, line);
+			getline(ifs, line);
+			getline(ifs, line);
+			getline(ifs, line);
+			if (students[i].group == group)
+			{
+				cout << students[i].booknum << "\n" << students[i].FIO << "\n" << students[i].faculty <<  "\n" << students[i].inst << "\n" << students[i].group << "\n";
+			}
+			
+		}
+	}
+}
 
 void printall()
 {
