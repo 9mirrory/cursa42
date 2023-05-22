@@ -2,7 +2,6 @@
 #include <Windows.h>
 #include <fstream>
 #include <string>
-#include <system>
 using namespace std;
 
 struct ExamsRecords {
@@ -14,29 +13,64 @@ struct ExamsRecords {
 	// 6 pole pustoe
 };
 
-struct Student {
+struct Student 
+{
 	string FIO = "Иванов Иван Иванович";
-	
+	string faculty = "Информационная безопасность";
+	int birthDay = 2;
+	int birthMonth = 4;
 	int birthYear = 2004;
-	float sem = 4.1;
-	float sem1 = 4.1;
-	float sem2 = 4.1;
-};
-/*
-struct StudentNode1
-{	
-	
-	string surname;
-	string name;
-	string middlename;
-	string faculty;
-	string inst;
-	string group;
-	string birthDateString;
+	int startYear = 2023;
 	bool sex;
+	string group = "БББО-10-22";
+	string booknum = "2034A69";
+	string inst = "ИКБ";
+	bool c;
+
+
 };
-*/
-struct Date {
+
+int iint()
+{
+	int num;
+	while (1) {
+		cin >> num;
+		/*
+			fail() возвращает бит ошибки, при некорректном вводе(буква или др.)
+			будет очищен поток cin, а также вывод в консоль о неправильном вводе
+		*/
+		if (cin.fail()) {
+			cin.clear();
+			cin.ignore(100, '\n');
+			cout << "Некорректный ввод числа!\nПопробуйте ещё раз:";
+			continue;
+		}
+		return num;
+	}
+}
+
+unsigned short imark()
+{
+	short mark;
+	while (1) {
+		mark = iint(); // ввод оценки
+		if (mark < 1) mark = 1;
+		else if (mark > 5) mark = 5;
+		return mark;
+	}
+}
+
+// ВАЛИДИРОВАННЫЙ ВВОД СТРОКИ
+string istring()
+{
+	// ВВОД СТРОКИ, УЧИТЫВАЯ ПРОБЕЛЫ КАК СИМВОЛ, А НЕ КОНЕЦ СТРОКИ (ws - whitespace)
+	string str;
+	getline(cin >> ws, str);
+	return str;
+}
+
+struct Date 
+{
 	int day, month, year;
 
 	void operator = (string date);
@@ -55,128 +89,152 @@ void Date::operator=(string date)
 	date.erase(0, dot + 1);
 	this->year = stoi(date.substr(0, 4));
 }
-
-struct DATA
-{
-	string name, surname, patronimyc, faculty, department, group;
-	bool sex;
-	int admision_year, record_book;
-	Date birth;
-	vector <Session> sessions;
-
-	string DataToString();
-};
-
-string DATA::DataToString()
-{
-	StudentNode s;
-	string data;
-	data = s.name + " " + s.surname + " " + +" " + birth.GetDate() + " " +
-		to_string(admision_year) + " " + faculty + " " + department + " " + group + " " +
-		to_string(record_book) + " " + (sex ? "ìóæ" : "æåí") + " ";
-	for (auto cur : sessions) {
-		data += cur.GetAllSub() + " ";
-	}
-
-	return data;
-}
 */
 void addStudent()
 {
+	system("cls");
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
 	int n;
-	cout << "Ввести кол-во студентов: ";
+	cout << "===================================" << endl;
+	cout << "|  МЕНЮ ВВОДА ДАННЫХ ОБ УЧЕНИКАХ  |" << endl;
+	cout << "===================================" << endl;
+	cout << "Введите кол-во студентов: ";
 	cin >> n;
 	cin.get();
 	Student* students = new Student[n];
-
-	ofstream fout("textFile.txt"); // открытие файла
-
-	for (int i = 0; i < n; i++) {
-		cout << "Введите данные ученика \n" << i + 1 << ".";
-		cout << "Ввести ФИО: ";
-		getline(cin, students[i].FIO);
-		fout << i + 1 << "." << students[i].FIO << endl;
-		cout << "Ввести год рождения: ";
-		cin >> students[i].birthYear;
-		fout << students[i].birthYear << endl;
-		int NumMarks1, NumMarks2;
-		cout << "Ввести кол-во оценок за 1 семестр:";
-		cin >> NumMarks1;
-		float marks3_1 = 0, marks3_2 = 0;
-		for (int j = 0; j < NumMarks1; j++) {
-			int mark;
-			cout << "Ввести оценку за 1 семестр: ";
-			cin >> mark;
-			if (4.0 > mark && mark >= 3.0) {
-				marks3_1++;
-			}
+	for (int i = 0; i < n; i++) 
+	{
+		students[i].c = FALSE;
+		ofstream out;
+		out.open("textFile.txt", std::ios_base::app);
+		cout << "Введите данные ученика \n" << i + 1 << "." << endl;
+		cout << "Введите ФИО: ";
+		if (students[i].FIO.find(" "))
+		students[i].FIO = istring();
+		if (students[i].FIO.find(" ")) 
+		{
+			out << i + 1 << "." << students[i].FIO << endl;
 		}
-		students[i].sem1 = marks3_1;
-		cout << "Ввести кол-во оценок за 2 семестр: ";
+
+		cout << "\nВведите год рождения: ";
+		students[i].birthYear = iint();
+		if (students[i].birthYear > 1990 || students[i].birthYear <2006)
+		{
+			out << students[i].birthYear << endl;
+		}
+		
+		cout << "\nВведите год поступления: ";
+		students[i].startYear = iint();
+		if (students[i].startYear > 2010 || students[i].startYear < 2023)
+		{
+			out << students[i].startYear << endl;
+		}
+
+		cout << "\nВведите название направления: ";
+		students[i].faculty = istring();
+		out << students[i].faculty << endl;
+
+		cout << "\nВведите название института (сокращенно): ";
+		students[i].inst = istring();
+		if (!students[i].faculty.find(" "))
+		{
+			out << students[i].faculty << endl;
+		}
+
+		cout << "\nВведите название группы: ";
+		students[i].group = istring();
+		out << students[i].group << endl;
+
+		cout << "\nВведите номер зачетной книжки: ";
+		students[i].booknum = istring();
+		out << students[i].booknum << endl;
+
+		cout << "\nВведите пол \n(мужской - 1 , женский - 0) : ";
+		cin >> students[i].sex;
+		int NumMarks1, NumMarks2;
+		cout << "\nВвести кол-во предметов за 1 семестр: ";
+		cin >> NumMarks1;
+		if (NumMarks1 <= 10 || NumMarks1 >= 1) {
+
+		}
+		float marks3_1 = 0, marks3_2 = 0;
+		out << "[";
+		for (int j = 0; j < NumMarks1; j++) 
+		{
+			string subject;
+			int mark;
+			cout << "Введите название предмета: ";
+			subject = istring();
+			cout << "\nВвести оценку за 1 семестр: ";
+			mark = imark();
+			if (mark == 3) {
+				students[i].c = TRUE;
+			};
+			out << subject << "-" << mark;
+			if (j != NumMarks1 - 1)
+			{
+				out << ", ";
+			};
+		}
+		out << "]\n[";
+		students[i].c = marks3_1;
+		cout << "Ввести кол-во предметов за 2 семестр: ";
 		cin >> NumMarks2;
 		for (int j = 0; j < NumMarks2; j++) {
+			string subject;
 			int mark;
+			cout << "Введите название предмета: ";
+			subject = istring();
 			cout << "Ввести оценку за 2 семестр: ";
-			cin >> mark;
-			if (4.0 > mark && mark >= 3.0) {
-				marks3_2++;
-			}
+			mark = imark();
+			if (mark == 3) 
+			{
+				students[i].c = TRUE;
+			};
+			out << subject << "-" << mark;
+			if (j != NumMarks2 - 1)
+			{
+				out << ", ";
+			};
 		}
-		students[i].sem2 = marks3_2;
-		students[i].sem = ((students[i].sem1 + students[i].sem2) / (NumMarks1 + NumMarks2)) * 100;
-		fout << students[i].sem << "%" << endl;
-		cout << "--------------------------------------------\n";
-		cin.get();
+		out << "]\n";
+		out << students[i].c << "\n" << endl;
+		cin.clear();
+		out.close();
 	}
-	fout.close();
-
+	cout << "Готово. Нажмите ENTER, чтобы вернуться в главное меню";
+	getchar();
+	getchar();
+	int main();
 }
-/*{
-	string faculty;
+
+void printall()
+{
 	system("cls");
-	StudentNode s;
-	ofstream out;
-	out.open("textFile.txt");
-	cout << "================================================================\n";
-	cout << "МЕНЮ ВВОДА ДАННЫХ УЧЕНИКА\n";
-	cout << "================================================================\n\n";
-	cout << "Введите фамилию: " << endl;
-	cin >> s.surname;
-	cout << "\nВведите имя:  " << endl;
-	cin >> s.name;
-	cout << "\nВведите отчество:  " << endl;
-	cin >> s.middlename;
-	cout << "\nВведите название направления:  " << endl;
-	getline(cin, faculty);
-	cout << "\nВведите название института:  " << endl;
-	cin >> s.inst;
-	cout << "\nВведите название группы:  " << endl;
-	cin >> s.group;
-	cout << "\nВведите дату рождения:  " << endl;
-	cin >> s.birthDateString;
-	if (out.is_open())
+	cout << "===================================" << endl;
+	cout << "| ДАННЫЕ ОБ УЧЕНИКАХ  |" << endl;
+	cout << "===================================" << endl;
+	string line;
+	std::ifstream in("textFile.txt"); // окрываем файл для чтения
+	if (in.is_open())
 	{
-		out << s.surname << " " << s.name << " " << s.middlename << " " << s.faculty << " " << s.inst << " " << s.group << " " << s.birthDateString << " " << "\n";
+		while (getline(in, line))
+		{
+			cout << line << endl;
+		}
 	}
-	out.close();
-	cout << "Done. Press ENTER to continue... ";
+	cout << "Готово. Нажмите ENTER, чтобы вернуться в главное меню";
 	getchar();
 	getchar();
-}*/
-
-void studentsinfo() {
-
 }
+
 int main()
 {
 	setlocale(LC_ALL, "Russian");
 	SetConsoleCP(1251); // Ввод с консоли в кодировке 1251
 	SetConsoleOutputCP(1251);
-
 	std::cout << "Курсовая работа!\n";
-	//menu
 	int meniu = -1;
 	while (meniu != 4)
 	{
@@ -191,8 +249,8 @@ int main()
 		case 1:
 			addStudent();
 		case 2:
-			studentsinfo();
-		default:
+			printall();
+		case 4:
 			cout << "Выход из курсовой работы" << "\n";
 			break;
 		}
