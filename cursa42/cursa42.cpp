@@ -254,10 +254,10 @@ void exercise()
 			sem1 = line.substr(comma8 + 1, comma9-comma8-1);
 			sem2 = line.substr(comma9 + 1, comma10-comma9-1);
 			c = line.substr(comma10 + 1, line.length());
-			cout << "\nСтудент:\n-->" << student[i].FIO << "\nДата рождения:\n-->" << student[i].birthYear 
-				<< "\nГод поступления:\n-->" << student[i].startYear << "\nНаправление:\n-->" << student[i].faculty
-				<< "\nИнститут:\n-->" << student[i].inst << "\nНомер зачетной книжки:\n-->"  << student[i].booknum 
-				<< "\nПол:\n-->" << student[i].sex << "\nОценки за первый семестр:\n" << sem1
+			cout << "\nСтудент:\n		" << student[i].FIO << "\nНомер зачетной книжки:\n		" << student[i].booknum
+				<< "\nДата рождения:\n		" << student[i].birthYear << "\nПол:\n		" << student[i].sex
+				<< "\nИнститут:\n		" << student[i].inst << "\nНаправление:\n		"  << student[i].faculty 
+				<< "\nГод поступления:\n		" << student[i].startYear << "\nОценки за первый семестр:\n" << sem1
 				<< "\nОценки за второй семестр:\n" << sem2 << "\n";
 			i++;
 		}
