@@ -15,7 +15,7 @@ struct ExamsRecords {
 
 struct Student 
 {
-	string FIO = "Иванов Иван Иванович";
+	string FIO = "Поляков Иван Иванович";
 	string faculty = "Информационная безопасность";
 	int birthDay = 2;
 	int birthMonth = 4;
@@ -118,48 +118,45 @@ void addStudent()
 		out.open("textFile.txt", std::ios_base::app);
 		cout << "Введите данные ученика \n" << i + 1 << "." << endl;
 		cout << "Введите ФИО: ";
-		if (students[i].FIO.find(" "))
 		students[i].FIO = istring();
 		if (students[i].FIO.find(" ")) 
 		{
-			out << i + 1 << "." << students[i].FIO << endl;
+			out  << students[i].FIO << ";";
 		}
 
 		cout << "\nВведите год рождения: ";
 		students[i].birthYear = iint();
 		if (students[i].birthYear > 1990 || students[i].birthYear <2006)
 		{
-			out << students[i].birthYear << endl;
+			out << students[i].birthYear << ";";
 		}
 		
 		cout << "\nВведите год поступления: ";
 		students[i].startYear = iint();
 		if (students[i].startYear > 2010 || students[i].startYear < 2023)
 		{
-			out << students[i].startYear << endl;
+			out << students[i].startYear << ";";
 		}
 
 		cout << "\nВведите название направления: ";
 		students[i].faculty = istring();
-		out << students[i].faculty << endl;
+		out << students[i].faculty << ";";
 
 		cout << "\nВведите название института (сокращенно): ";
 		students[i].inst = istring();
-		if (!students[i].inst.find(" "))
-		{
-			out << students[i].inst << endl;
-		}
+		out << students[i].inst << ";";
 
 		cout << "\nВведите название группы: ";
 		students[i].group = istring();
-		out << students[i].group << endl;
+		out << students[i].group << ";";
 
 		cout << "\nВведите номер зачетной книжки: ";
 		students[i].booknum = istring();
-		out << students[i].booknum << endl;
+		out << students[i].booknum << ";";
 
 		cout << "\nВведите пол \n(мужской - 1 , женский - 0) : ";
 		cin >> students[i].sex;
+		out << students[i].sex << ";";
 		int NumMarks1, NumMarks2;
 		cout << "\nВвести кол-во предметов за 1 семестр: ";
 		cin >> NumMarks1;
@@ -182,10 +179,10 @@ void addStudent()
 			out << subject << "-" << mark;
 			if (j != NumMarks1 - 1)
 			{
-				out << ", ";
+				out << ",";
 			};
 		}
-		out << "]\n[";
+		out << "];[";
 		students[i].c = marks3_1;
 		cout << "Ввести кол-во предметов за 2 семестр: ";
 		cin >> NumMarks2;
@@ -203,64 +200,80 @@ void addStudent()
 			out << subject << "-" << mark;
 			if (j != NumMarks2 - 1)
 			{
-				out << ", ";
+				out << ",";
 			};
 		}
-		out << "]\n";
-		out << students[i].c << "\n" << endl;
+		out << "];";
+		out << students[i].c << "\n";
 		cin.clear();
 		out.close();
 	}
+	delete[] students;
 	cout << "Готово. Нажмите ENTER, чтобы вернуться в главное меню";
+	getchar();
 	getchar();
 	int main();
 }
 
-//void exercise() 
-//{
-//	string group;
-//	int i = 0, j = 0, n = 0;
-//	string line;
-//	Student* students = new Student[i];
-//	ifstream ifs;
-//	ifs.open("textFile.txt", ios_base::in);
-//	cout << "Введите название группы, чтобы просмотреть студентов: ";
-//	cin >> group;
-//	if (ifs.is_open())
-//	{
-//		while (getline(ifs, line))
-//		{
-//			students[i].FIO = line;
-//			getline(ifs, line);
-//			students[i].birthYear = stoi(line);
-//			getline(ifs, line);
-//			students[i].startYear = stoi(line);
-//			getline(ifs, line);
-//			students[i].faculty = line;
-//			getline(ifs, line);
-//			students[i].inst = line;
-//			getline(ifs, line);
-//			students[i].group = line;
-//			getline(ifs, line);
-//			students[i].booknum = line;
-//			getline(ifs, line);
-//			getline(ifs, line);
-//			getline(ifs, line);
-//			getline(ifs, line);
-//			if (students[i].group == group)
-//			{
-//				cout << students[i].booknum << "\n" << students[i].FIO << "\n" << students[i].faculty <<  "\n" << students[i].inst << "\n" << students[i].group << "\n";
-//			}
-//			
-//		}
-//	}
-//}
+void exercise() 
+{
+	string group1; 
+	system("cls");
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+	int i = 0, j = 0, n = 50;
+	string line, s = ";", str, sem1, sem2, c;
+	size_t comma1, comma2, comma3, comma4, comma5, comma6, comma7, comma8, comma9, comma10;
+	Student *student = new Student[n];
+	ifstream ifs;
+	ifs.open("textFile.txt");
+	cout << "Введите название группы, чтобы просмотреть студентов: ";
+	cin >> group1;
+	if (ifs.is_open())
+	{
+		while (getline(ifs, line))
+		{
+			comma1 = line.find(s);
+			comma2 = comma1 + 5;
+			comma3 = comma2 + 5;
+			comma4 = line.find(s, comma3 + 1);
+			comma5 = line.find(s, comma4 + 1);
+			comma6 = line.find(s, comma5 + 1);
+			comma7 = line.find(s, comma6 + 1);
+			comma8 = line.find(s, comma7 + 1);
+			comma9 = line.find(s, comma8 + 1);
+			comma10 = line.find(s, comma9 + 1);
+			student[i].FIO = line.substr(0, comma1);
+			student[i].birthYear = stoi(line.substr(comma1 + 1, comma2 - comma1 - 1));
+			student[i].startYear = stoi(line.substr(comma2 + 1, comma3 - comma2 - 1));
+			student[i].faculty = line.substr(comma3 + 1, comma4 - comma3 - 1);
+			student[i].inst = line.substr(comma4 + 1, comma5 - comma4 - 1);
+			student[i].group = line.substr(comma5 + 1, comma6-comma5-1);
+			student[i].booknum = line.substr(comma6 + 1, comma7-comma6-1);
+			student[i].sex = stoi(line.substr(comma7 + 1, comma8-comma7-1));
+			sem1 = line.substr(comma8 + 1, comma9-comma8-1);
+			sem2 = line.substr(comma9 + 1, comma10-comma9-1);
+			c = line.substr(comma10 + 1, line.length());
+			cout << "\nСтудент:\n-->" << student[i].FIO << "\nДата рождения:\n-->" << student[i].birthYear 
+				<< "\nГод поступления:\n-->" << student[i].startYear << "\nНаправление:\n-->" << student[i].faculty
+				<< "\nИнститут:\n-->" << student[i].inst << "\nНомер зачетной книжки:\n-->"  << student[i].booknum 
+				<< "\nПол:\n-->" << student[i].sex << "\nОценки за первый семестр:\n" << sem1
+				<< "\nОценки за второй семестр:\n" << sem2 << "\n";
+			i++;
+		}
+	}
+	ifs.close();
+	cout << "Готово. Нажмите ENTER, чтобы вернуться в главное меню";
+	getchar();
+	getchar();
+	int main();
+}
 
 void printall()
 {
 	system("cls");
 	cout << "===================================" << endl;
-	cout << "| ДАННЫЕ ОБ УЧЕНИКАХ  |" << endl;
+	cout << "| ДАННЫЕ ОБ УЧЕНИКАХ              |" << endl;
 	cout << "===================================" << endl;
 	string line;
 	ifstream in("textFile.txt"); // окрываем файл для чтения
@@ -271,7 +284,9 @@ void printall()
 			cout << line << endl;
 		}
 	}
+	cout << "\n";
 	cout << "Готово. Нажмите ENTER, чтобы вернуться в главное меню";
+	getchar();
 	getchar();
 	int main();
 }
