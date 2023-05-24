@@ -2,44 +2,34 @@
 #include <Windows.h>
 #include <fstream>
 #include <string>
+#include <math.h>
+#include <algorithm>
 using namespace std;
-
-struct ExamsRecords {
-	string name;
-	int mark;
-	// 0 - ne zachet  
-	// 1 - zachet
-	// 2,3,4,5 - octnki
-	// 6 pole pustoe
-};
 
 struct Student 
 {
-	string FIO = "Поляков Иван Иванович";
-	string faculty = "Информационная безопасность";
-	int birthDay = 2;
-	int birthMonth = 4;
-	int birthYear = 2004;
-	int startYear = 2023;
-	bool sex;
-	string group = "БББО-10-22";
-	string booknum = "2034A69";
-	string inst = "ИКБ";
-	bool c;
-
-
+	string FIO;
+	string faculty;
+	int birthDay;
+	int birthMonth;
+	int birthYear;
+	int startYear;
+	string sex;
+	string group;
+	string booknum;
+	string inst;
+	int c;
+	string sess[9];
 };
 
 int iint()
 {
 	int num;
-	while (1) {
+	while (1) 
+	{
 		cin >> num;
-		/*
-			fail() возвращает бит ошибки, при некорректном вводе(буква или др.)
-			будет очищен поток cin, а также вывод в консоль о неправильном вводе
-		*/
-		if (cin.fail()) {
+		if (cin.fail()) 
+		{
 			cin.clear();
 			cin.ignore(100, '\n');
 			cout << "Некорректный ввод числа!\nПопробуйте ещё раз:";
@@ -49,10 +39,70 @@ int iint()
 	}
 }
 
+int iyear() {
+	int year;
+	while (1) {
+		year = iint();
+		if (year < 1990 || year > 2023) {
+			cin.clear();
+			cin.ignore(100, '\n');
+			cout << "Некорректный ввод года! \nВведите число от  1990 до 2023: ";
+			continue;
+		}
+		return year;
+	}
+}
+int imonth() {
+	int month;
+	while (1)
+	{	
+		month = iint();
+		if (month < 1 && month > 12)
+		{
+			cin.clear();
+			cin.ignore(100, '\n');
+			cout << "Некорректный ввод месяца!\nВведите число от 1 до 12: ";
+			continue;
+		}
+		return month;
+	}
+}
+
+int iday(int month) 
+{
+	int day;
+	while (1) {
+		day = iint();
+		if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month ==10 || month == 12)
+		{
+			if (day < 1 || day >31)
+			{
+				cin.clear();
+				cin.ignore(100,'\n');
+				cout << "Некорректный ввод дня!\n Введите число от 1 до 31: ";
+				continue;
+
+			}			
+		}
+		if (month == 2 || month == 4 || month == 6 || month == 9 || month == 11)
+		{
+			if (day < 1 || day >30)
+			{
+				cin.clear();
+				cin.ignore();
+				cout << "Некорректный ввод дня!\nВведите число от 1 до 30: ";
+				continue;
+			}
+		}
+		return day;
+	}
+}
+
 unsigned short imark()
 {
 	short mark;
-	while (1) {
+	while (1) 
+	{
 		mark = iint(); // ввод оценки
 		if (mark < 1) mark = 1;
 		else if (mark > 5) mark = 5;
@@ -60,44 +110,16 @@ unsigned short imark()
 	}
 }
 
-// ВАЛИДИРОВАННЫЙ ВВОД СТРОКИ
 string istring()
 {
-	// ВВОД СТРОКИ, УЧИТЫВАЯ ПРОБЕЛЫ КАК СИМВОЛ, А НЕ КОНЕЦ СТРОКИ (ws - whitespace)
 	string str;
 	getline(cin >> ws, str);
 	return str;
 }
 
-struct Date 
-{
-	int day, month, year;
-
-	void operator = (string date);
-
-	string GetDate();
-};
-/*
-void Date::operator=(string date)
-{
-
-	size_t dot = date.find(".");
-	this->day = stoi(date.substr(0, dot));
-	date.erase(0, dot + 1);
-	dot = date.find(".");
-	this->month = stoi(date.substr(0, dot));
-	date.erase(0, dot + 1);
-	this->year = stoi(date.substr(0, 4));
-}
-*/
-void studentswap() {
-	
-
-}
-
 void addStudent()
 {
-	int j = 0;
+	int j = 0, NumMarks, sesscount;
 	Student* studentbuff = new Student[j];
 	system("cls");
 	SetConsoleCP(1251);
@@ -125,18 +147,17 @@ void addStudent()
 		}
 
 		cout << "\nВведите год рождения: ";
-		students[i].birthYear = iint();
-		if (students[i].birthYear > 1990 || students[i].birthYear <2006)
-		{
-			out << students[i].birthYear << ";";
-		}
+		students[i].birthYear = iyear();
 		
+		cout << "Введите месяц рождения: ";
+		students[i].birthMonth = imonth();
+
+		cout << "Введите день рождения: ";
+		students[i].birthDay = iday(students[i].birthMonth);
+		out << students[i].birthDay << "." << students[i].birthMonth << "." << students[i].birthYear << ";";
+
 		cout << "\nВведите год поступления: ";
-		students[i].startYear = iint();
-		if (students[i].startYear > 2010 || students[i].startYear < 2023)
-		{
-			out << students[i].startYear << ";";
-		}
+		students[i].startYear = iyear();
 
 		cout << "\nВведите название направления: ";
 		students[i].faculty = istring();
@@ -154,56 +175,41 @@ void addStudent()
 		students[i].booknum = istring();
 		out << students[i].booknum << ";";
 
-		cout << "\nВведите пол \n(мужской - 1 , женский - 0) : ";
-		cin >> students[i].sex;
-		out << students[i].sex << ";";
-		int NumMarks1, NumMarks2;
-		cout << "\nВвести кол-во предметов за 1 семестр: ";
-		cin >> NumMarks1;
-		if (NumMarks1 <= 10 || NumMarks1 >= 1) {
+		cout << "\nВведите пол \n(М, Ж) : ";
+		students[i].sex = istring();
 
-		}
-		float marks3_1 = 0, marks3_2 = 0;
-		out << "[";
-		for (int j = 0; j < NumMarks1; j++) 
+		cout << "\nВведите количество сессий ( до 9 ): ";
+		sesscount = iint();
+		if (sesscount > 9)
 		{
-			string subject;
-			int mark;
-			cout << "Введите название предмета: ";
-			subject = istring();
-			cout << "\nВвести оценку за 1 семестр: ";
-			mark = imark();
-			if (mark == 3) {
-				students[i].c = TRUE;
-			};
-			out << subject << "-" << mark;
-			if (j != NumMarks1 - 1)
-			{
-				out << ",";
-			};
+			sesscount = 9;
 		}
-		out << "];[";
-		students[i].c = marks3_1;
-		cout << "Ввести кол-во предметов за 2 семестр: ";
-		cin >> NumMarks2;
-		for (int j = 0; j < NumMarks2; j++) {
-			string subject;
+
+		for (int k = 0; k < sesscount; k++) 
+		{
+			string sess = "[", subj;
 			int mark;
-			cout << "Введите название предмета: ";
-			subject = istring();
-			cout << "Ввести оценку за 2 семестр: ";
-			mark = imark();
-			if (mark == 3) 
+			cout << "\nВвести кол-во предметов за " << k+1 << " сессию: ";
+			cin >> NumMarks;
+			if (NumMarks > 10)
 			{
-				students[i].c = TRUE;
-			};
-			out << subject << "-" << mark;
-			if (j != NumMarks2 - 1)
+				NumMarks = 10;
+			}
+			for (int k1 = 0; k1 < NumMarks; k1++) 
 			{
-				out << ",";
-			};
+				cout << "\nВведите название предмета" << k1+1 << ": ";
+				subj = istring();
+				cout << "\nВведите оценку за предмет" << subj << ": ";
+				mark = imark();
+				if (mark <= 3) 
+				{
+					students[i].c = TRUE;
+				}
+				sess = sess + subj + "-" + to_string(mark) + ",";
+			}
+			sess = sess + "];";
+			out << sess; 
 		}
-		out << "];";
 		out << students[i].c << "\n";
 		cin.clear();
 		out.close();
@@ -221,9 +227,9 @@ void exercise()
 	system("cls");
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
-	int i = 0, j = 0, n = 50;
-	string line, s = ";", str, sem1, sem2, c;
-	size_t comma1, comma2, comma3, comma4, comma5, comma6, comma7, comma8, comma9, comma10;
+	int c, i = 0, i2 = 0, j = 0, j1 = 0, n = 50, k = 0, i1 = 0, k1 = 0, semicolonCount = 0;
+	string line, s = ";", str, sem1, sem2;
+	size_t comma1, comma2, comma3, comma4, comma5, comma6, comma7, comma8, comma9, comma10, dot1, dot2;
 	Student *student = new Student[n];
 	ifstream ifs;
 	ifs.open("textFile.txt");
@@ -233,35 +239,96 @@ void exercise()
 	{
 		while (getline(ifs, line))
 		{
+			comma1 = 0;
+			dot1 = 0;
+			semicolonCount = 0;
+			char ch = ';';
+			semicolonCount = count(line.begin(), line.end(), ch);
 			comma1 = line.find(s);
-			comma2 = comma1 + 5;
-			comma3 = comma2 + 5;
+			dot1 = line.find(".", comma1 + 1);
+			dot2 = line.find(".", dot1 + 1);
+			comma2 = line.find(s, comma1 + 1);
+			comma3 = line.find(s, comma2 + 1);
 			comma4 = line.find(s, comma3 + 1);
 			comma5 = line.find(s, comma4 + 1);
 			comma6 = line.find(s, comma5 + 1);
 			comma7 = line.find(s, comma6 + 1);
 			comma8 = line.find(s, comma7 + 1);
-			comma9 = line.find(s, comma8 + 1);
-			comma10 = line.find(s, comma9 + 1);
 			student[i].FIO = line.substr(0, comma1);
-			student[i].birthYear = stoi(line.substr(comma1 + 1, comma2 - comma1 - 1));
+			student[i].birthDay = stoi(line.substr(comma1 + 1, dot1 - comma1 - 1));
+			student[i].birthMonth = stoi(line.substr(dot1 + 1, dot2 - dot1 - 1));
+			student[i].birthYear = stoi(line.substr(dot2 + 1, comma2 - dot2 - 1));
 			student[i].startYear = stoi(line.substr(comma2 + 1, comma3 - comma2 - 1));
 			student[i].faculty = line.substr(comma3 + 1, comma4 - comma3 - 1);
 			student[i].inst = line.substr(comma4 + 1, comma5 - comma4 - 1);
 			student[i].group = line.substr(comma5 + 1, comma6-comma5-1);
 			student[i].booknum = line.substr(comma6 + 1, comma7-comma6-1);
-			student[i].sex = stoi(line.substr(comma7 + 1, comma8-comma7-1));
-			sem1 = line.substr(comma8 + 1, comma9-comma8-1);
-			sem2 = line.substr(comma9 + 1, comma10-comma9-1);
-			c = line.substr(comma10 + 1, line.length());
-			cout << "\nСтудент:\n		" << student[i].FIO << "\nНомер зачетной книжки:\n		" << student[i].booknum
-				<< "\nДата рождения:\n		" << student[i].birthYear << "\nПол:\n		" << student[i].sex
-				<< "\nИнститут:\n		" << student[i].inst << "\nНаправление:\n		"  << student[i].faculty 
-				<< "\nГод поступления:\n		" << student[i].startYear << "\nОценки за первый семестр:\n" << sem1
-				<< "\nОценки за второй семестр:\n" << sem2 << "\n";
-			i++;
+			student[i].sex = line.substr(comma7 + 1, comma8-comma7-1);
+			comma9 = line.find(s, comma8 + 1);
+			comma10 = 0;
+			for (int k1 = 0; k1 < (semicolonCount - 8); k1++)
+			{
+				comma9 = line.find(s, comma8 + 1);
+				student[i].sess[k1] = line.substr(comma8 + 1, comma9 - comma8-1);
+				comma8 = comma9;
+			}
+			student[i].c = stoi(line.substr(comma9 + 1, comma9 + 2));
+			if (student[i].group == group1)
+			{
+				i++;
+			}
+			else continue;
+		}
+		i1 = i;
+		while (i1--)
+		{
+			bool swapped = false;
+			for (k = 0; k < i1; k++)
+			{
+				if (student[k].booknum > student[k + 1].booknum && student[k].c > student[k + 1].c)
+				{
+					swap(student[k], student[k + 1]);
+					swapped = true;
+				}
+			}	
+			if (swapped == false)
+				break;
+		}
+		c = 0;
+		for (j = 0; j<i;j++)
+		{
+			if (j == 0)
+			{	
+				cout << "\n_______________________________\n";
+				cout << "Студенты с оценками 4 и 5 :\n_______________________________\n";
+			}
+			cout << "\nСтудент:		    " << student[j].FIO << "\nНомер зачетной книжки:	    " << student[j].booknum
+				<< "\nДата рождения:		    " << student[j].birthDay << "." << student[j].birthMonth << "." << student[j].birthYear
+				<< "\nПол:		            " << student[j].sex
+				<< "\nИнститут:		    " << student[j].inst << "\nНаправление:		    " << student[j].faculty
+				<< "\nГод поступления:	    " << student[j].startYear;
+			for (int k2 = 0; k2 < size(student[j].sess); k2++)
+			{
+				if (student[j].sess[k2] != "")
+				{
+					cout << "\nОценки за " << k2 + 1 << " сессию:\n               " << student[j].sess[k2];
+				}
+				else
+				{
+					continue;
+				}
+			}
+			cout << "\n_______________________________\n";
+			if (j != 0 && j != i-1)
+			{
+				if (student[j].c != student[j + 1].c) {
+					cout << "Студенты с оценками 3 :\n_______________________________\n";
+				}
+			}
+
 		}
 	}
+	delete[] student;
 	ifs.close();
 	cout << "Готово. Нажмите ENTER, чтобы вернуться в главное меню";
 	getchar();
@@ -273,7 +340,7 @@ void printall()
 {
 	system("cls");
 	cout << "===================================" << endl;
-	cout << "| ДАННЫЕ ОБ УЧЕНИКАХ              |" << endl;
+	cout << "|        ДАННЫЕ ОБ УЧЕНИКАХ       |" << endl;
 	cout << "===================================" << endl;
 	string line;
 	ifstream in("textFile.txt"); // окрываем файл для чтения
