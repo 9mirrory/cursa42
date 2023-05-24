@@ -159,7 +159,7 @@ void addStudent()
 		cout << "\nВведите год поступления: ";
 		students[i].startYear = iyear();
 
-		cout << "\nВведите название направления: ";
+		cout << "\nВведите название кафедры: ";
 		students[i].faculty = istring();
 		out << students[i].faculty << ";";
 
@@ -227,7 +227,7 @@ void exercise()
 	system("cls");
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
-	int c, i = 0, i2 = 0, j = 0, j1 = 0, n = 50, k = 0, i1 = 0, k1 = 0, semicolonCount = 0;
+	int c, i = 0, i2 = 0, j = 0, j1 = 0, n = 50, k = 0, i1 = 0, k1 = 0, semicolonCount, min = 2022, max = 0;
 	string line, s = ";", str, sem1, sem2;
 	size_t comma1, comma2, comma3, comma4, comma5, comma6, comma7, comma8, comma9, comma10, dot1, dot2;
 	Student *student = new Student[n];
@@ -272,6 +272,14 @@ void exercise()
 				student[i].sess[k1] = line.substr(comma8 + 1, comma9 - comma8-1);
 				comma8 = comma9;
 			}
+			if (student[i].birthYear << min)
+			{
+				min = student[i].birthYear;
+			}
+			if (student[i].birthYear > max)
+			{
+				max = student[i].birthYear;
+			}
 			student[i].c = stoi(line.substr(comma9 + 1, comma9 + 2));
 			if (student[i].group == group1)
 			{
@@ -295,6 +303,7 @@ void exercise()
 				break;
 		}
 		c = 0;
+		cout << min << "-" << max;
 		for (j = 0; j<i;j++)
 		{
 			if (j == 0)
